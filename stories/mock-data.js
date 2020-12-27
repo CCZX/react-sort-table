@@ -4,9 +4,6 @@ export const columns = [
     dataKey: 'name',
     key: 'name',
     width: '80',
-    render: (data) => {
-      return `this is ${data}`
-    }
   },
   {
     title: 'Age',
@@ -23,20 +20,20 @@ export const columns = [
 export const data = [
   {
     key: '1',
-    // name: 'John Brown',
-    age: 32,
+    name: '1111111111111',
+    age: 1,
     address: 'New York No. 1 Lake Park',
   },
   {
     key: '2',
-    name: 'Jim Green',
-    age: 42,
+    name: '2222222222222',
+    age: 2,
     address: 'London No. 1 Lake Park',
   },
   {
     key: '3',
-    name: 'Joe Black',
-    age: 32,
+    name: '33333333333333',
+    age: 3,
     address: 'Sidney No. 1 Lake Park',
   },
 ]

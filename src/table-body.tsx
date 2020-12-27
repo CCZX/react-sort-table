@@ -1,20 +1,20 @@
 import React, { FC, useCallback } from 'react'
 import TableRow from './table-row'
 import { IDataSourceItem, IColumnsItem } from './interface'
-import { moveArray } from './utils'
+import { arrayMove } from './utils'
 
 interface ITableBodyProps {
   dataSource: IDataSourceItem[]
   columns: IColumnsItem[]
-  onSortDataSource: (data: IDataSourceItem[]) => void
+  onSortDataSource: (data: IDataSourceItem[], isDragging?: boolean) => void
 }
 
 const TableBody: FC<ITableBodyProps> = (props) => {
   const { columns, dataSource, onSortDataSource } = props
 
-  const moveRow = useCallback((oldIndex, newIndex) => {
-    const arr = moveArray(dataSource, oldIndex, newIndex)
-    onSortDataSource(arr)
+  const moveRow = useCallback((oldIndex, newIndex, isDragging?: boolean) => {
+    const arr = arrayMove(dataSource, oldIndex, newIndex)
+    onSortDataSource(arr, isDragging)
   }, [onSortDataSource, dataSource])
 
   return <tbody>

@@ -25,7 +25,6 @@ const Template: Story<ITableProps> = args => {
   const [dataSource, setDataSource] = useState(data)
 
   const handleSort = useCallback((data) => {
-    console.log('123',data)
     setDataSource(data)
   }, [])
 

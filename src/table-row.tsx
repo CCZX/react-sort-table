@@ -9,7 +9,7 @@ interface ITableRowProps {
   rowData: IDataSourceItem
   columns: IColumnsItem[]
   index: number
-  moveRow: (oldIndex: number, newIndex: number) => void
+  moveRow: (oldIndex: number, newIndex: number, isDragging?: boolean) => void
 }
 
 const TableRow: FC<ITableRowProps> = (props) => {
@@ -35,6 +35,7 @@ const TableRow: FC<ITableRowProps> = (props) => {
   const [, drop] = useDrop({
     accept: EDragTypes.tableRow,
     hover(item: typeof withTypeRowData, monitor: DropTargetMonitor) {
+      console.log(monitor)
       const dragIndex = item.index;
       const hoverIndex = index;
 
@@ -44,11 +45,14 @@ const TableRow: FC<ITableRowProps> = (props) => {
 
       const rowRect = rowRef.current?.getBoundingClientRect() || {} as DOMRect
       const rowYAxisCenter = (rowRect?.bottom - rowRect?.top) / 2
+      console.log(rowRect, {rowYAxisCenter})
       // 鼠标🖱位置
       const mouseOffset = monitor.getClientOffset()
+      console.log(mouseOffset)
       // 鼠标距离row顶部top的距离
       const mouseDiffTop = (mouseOffset?.y || 0) - rowRect.top
 
+      // 向下拖动
       if (dragIndex < hoverIndex && rowYAxisCenter < mouseDiffTop) {
         return
       }
@@ -57,7 +61,7 @@ const TableRow: FC<ITableRowProps> = (props) => {
         return
       }
 
-      moveRow(dragIndex, hoverIndex);
+      moveRow(dragIndex, hoverIndex, isDragging);
     }
   })
 
@@ -65,6 +69,9 @@ const TableRow: FC<ITableRowProps> = (props) => {
 
   return drag(<tr
       ref={rowRef}
+      style={{
+        opacity: isDragging ? '0.7' : '1'
+      }}
     >
       {
         columns.map(column => {
