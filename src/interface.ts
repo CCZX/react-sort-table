@@ -13,3 +13,9 @@ export interface IDataSourceItem {
   key: strOrNum
   [key: string]: any
 }
+
+export type alignPosition = 'left' | 'center' | 'right'
+
+export enum EDragTypes {
+  tableRow = 'tableRow'
+}

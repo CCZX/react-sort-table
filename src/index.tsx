@@ -1,18 +1,22 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import TableBody from './table-body'
 import TableHeader from './table-header';
-import { IDataSourceItem, IColumnsItem } from './interface'
+import { IDataSourceItem, IColumnsItem, alignPosition } from './interface'
 import { sortColumn } from './const'
 import './index.scss'
 
 export interface ITableProps {
   dataSource: IDataSourceItem[]
   columns: IColumnsItem[]
-  useSort: boolean
+  useSort?: boolean
+  align?: alignPosition
+  onSortDataSource: (data: IDataSourceItem[]) => void
 }
 
 const SortTable: FC<ITableProps> = (props) => {
-  const { dataSource, columns, useSort = true } = props
+  const { dataSource, columns, useSort = true, align = 'center', onSortDataSource } = props
 
   const [columnsWidth, setColumnsWidth] = useState({})
 
@@ -40,17 +44,29 @@ const SortTable: FC<ITableProps> = (props) => {
     })
   }, [columnsWidth])
 
-  return <table className="react-sort-table">
-    <TableHeader
-      columns={whithSortColumns}
-      columnsWidth={columnsWidth}
-      onColumnsWidthChange={handleColumnsWidthChange}
-    />
-    <TableBody
-      dataSource={dataSource}
-      columns={whithSortColumns}
-    />
-  </table>
+  const handleSortData = useCallback((data: IDataSourceItem[]) => {
+    onSortDataSource(data)
+  }, [onSortDataSource])
+
+  return <DndProvider backend={HTML5Backend}>
+    <table
+      className="react-sort-table"
+      style={{
+        textAlign: align
+      }}
+    >
+      <TableHeader
+        columns={whithSortColumns}
+        columnsWidth={columnsWidth}
+        onColumnsWidthChange={handleColumnsWidthChange}
+      />
+      <TableBody
+        dataSource={dataSource}
+        columns={whithSortColumns}
+        onSortDataSource={handleSortData}
+      />
+    </table>
+  </DndProvider>
 };
 
 export default SortTable
