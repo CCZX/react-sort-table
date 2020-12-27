@@ -72,6 +72,7 @@ const SortTable: FC<ITableProps> = (props) => {
       <TableBody
         dataSource={data}
         columns={whithSortColumns}
+        columnsWidth={columnsWidth}
         onSortDataSource={handleSortDataSource}
       />
     </table>

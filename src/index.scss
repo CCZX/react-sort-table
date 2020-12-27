@@ -1,5 +1,8 @@
 .react-sort-table {
   border-spacing: 0;
+  border-collapse:collapse;
+  word-wrap: break-word;
+  word-break: break-all;
   &-head {
     .react-sort-table-head-row {
       background: #fafafa;
@@ -19,16 +22,27 @@
           top: 0;
           background-color: #e6e3e3;
           cursor: col-resize;
+          &:hover {
+            background-color: #59c7f9;
+          }
         }
       }
       
+    }
+  }
+  .react-sort-table-row {
+    &:hover {
+      background-color: #fafafa;
+    }
+    &:nth-child(2n) {
+      background-color: #fafafa;
     }
   }
   .react-sort-table-cell {
     box-sizing: border-box;
     padding: 16px;
     border-bottom: 1px solid #f0f0f0;
-    background-color: rgb(134, 63, 105);
+    // background-color: rgb(134, 63, 105);
     // background: #fafafa;
     &.sort-column {
       cursor: move;

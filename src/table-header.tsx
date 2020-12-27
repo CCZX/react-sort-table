@@ -49,7 +49,7 @@ const TableHeader: FC<ITableHeaderProps> = (props) => {
   const { columns, columnsWidth, onColumnsWidthChange } = props
 
   return <thead className='react-sort-table-head'>
-    <tr className="react-sort-table-head-row">
+    <tr className="react-sort-table-row react-sort-table-head-row">
       {
         columns.map(item => {
           return <TableHeaderCell

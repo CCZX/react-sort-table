@@ -9,11 +9,12 @@ interface ITableRowProps {
   rowData: IDataSourceItem
   columns: IColumnsItem[]
   index: number
+  columnsWidth: strOrNumObj
   moveRow: (oldIndex: number, newIndex: number, isDragging?: boolean) => void
 }
 
 const TableRow: FC<ITableRowProps> = (props) => {
-  const { rowData, columns, index, moveRow } = props
+  const { rowData, columns, index, columnsWidth, moveRow } = props
 
   const rowRef = useRef<HTMLTableRowElement>(null)
 
@@ -72,6 +73,7 @@ const TableRow: FC<ITableRowProps> = (props) => {
       style={{
         opacity: isDragging ? '0.7' : '1'
       }}
+      className="react-sort-table-row react-sort-table-body-row"
     >
       {
         columns.map(column => {
@@ -86,6 +88,9 @@ const TableRow: FC<ITableRowProps> = (props) => {
           }
           return <td
             key={column.key}
+            style={{
+              width: columnsWidth[column.key]
+            }}
             className="react-sort-table-cell"
           >
             {

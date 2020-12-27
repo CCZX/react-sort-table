@@ -6,11 +6,12 @@ import { arrayMove } from './utils'
 interface ITableBodyProps {
   dataSource: IDataSourceItem[]
   columns: IColumnsItem[]
+  columnsWidth: strOrNumObj
   onSortDataSource: (data: IDataSourceItem[], isDragging?: boolean) => void
 }
 
 const TableBody: FC<ITableBodyProps> = (props) => {
-  const { columns, dataSource, onSortDataSource } = props
+  const { columns, dataSource, onSortDataSource, columnsWidth } = props
 
   const moveRow = useCallback((oldIndex, newIndex, isDragging?: boolean) => {
     const arr = arrayMove(dataSource, oldIndex, newIndex)
@@ -26,6 +27,7 @@ const TableBody: FC<ITableBodyProps> = (props) => {
           rowData={rowData}
           columns={columns}
           index={index}
+          columnsWidth={columnsWidth}
           moveRow={moveRow}
         />
       })
