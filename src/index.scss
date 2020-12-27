@@ -1,0 +1,33 @@
+.react-sort-table {
+  border-spacing: 0;
+  &-head {
+    .react-sort-table-head-row {
+      background: #fafafa;
+      .react-sort-table-cell {
+        position: relative;
+        &:hover {
+          .adjust-width-flag {
+            display: block;
+          }
+        }
+        .adjust-width-flag {
+          display: none;
+          position: absolute;
+          width: 5px;
+          height: 100%;
+          right: 0;
+          top: 0;
+          background-color: #e6e3e3;
+          cursor: col-resize;
+        }
+      }
+      
+    }
+  }
+  .react-sort-table-cell {
+    box-sizing: border-box;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    // background: #fafafa;
+  }
+}
