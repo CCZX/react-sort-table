@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useMemo, useRef, useState } from 'react'
 import { DragSourceMonitor, useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { SortIcon } from './icons'
 import { IDataSourceItem, IColumnsItem, EDragTypes } from './interface'
@@ -17,6 +17,8 @@ const TableRow: FC<ITableRowProps> = (props) => {
   const { rowData, columns, index, columnsWidth, moveRow } = props
 
   const rowRef = useRef<HTMLTableRowElement>(null)
+  const [toIndex, setToIndex] = useState(0)
+  const [fromIndex, setFromIndex] = useState(0)
 
   const withTypeRowData = {
     ...rowData,
@@ -31,6 +33,10 @@ const TableRow: FC<ITableRowProps> = (props) => {
         isDragging: monitor.isDragging()
       }
     },
+    end() {
+      setToIndex(0)
+      setFromIndex(0)
+    }
   })
 
   const [, drop] = useDrop({
@@ -39,41 +45,62 @@ const TableRow: FC<ITableRowProps> = (props) => {
       console.log(monitor)
       const dragIndex = item.index;
       const hoverIndex = index;
-
+      
       if (dragIndex === hoverIndex) {
         return
       }
+      
+      fromIndex !== dragIndex && setFromIndex(dragIndex)
+      toIndex !== hoverIndex && setToIndex(hoverIndex)
 
-      const rowRect = rowRef.current?.getBoundingClientRect() || {} as DOMRect
-      const rowYAxisCenter = (rowRect?.bottom - rowRect?.top) / 2
-      console.log(rowRect, {rowYAxisCenter})
-      // 鼠标🖱位置
-      const mouseOffset = monitor.getClientOffset()
-      console.log(mouseOffset)
-      // 鼠标距离row顶部top的距离
-      const mouseDiffTop = (mouseOffset?.y || 0) - rowRect.top
+      // const rowRect = rowRef.current?.getBoundingClientRect() || {} as DOMRect
+      // const rowYAxisCenter = (rowRect?.bottom - rowRect?.top) / 2
+      // console.log(rowRect, {rowYAxisCenter})
+      // // 鼠标🖱位置
+      // const mouseOffset = monitor.getClientOffset()
+      // console.log(mouseOffset)
+      // // 鼠标距离row顶部top的距离
+      // const mouseDiffTop = (mouseOffset?.y || 0) - rowRect.top
 
-      // 向下拖动
-      if (dragIndex < hoverIndex && rowYAxisCenter < mouseDiffTop) {
-        return
-      }
+      // // 向下拖动
+      // if (dragIndex < hoverIndex && rowYAxisCenter < mouseDiffTop) {
+      //   return
+      // }
 
-      if (dragIndex > hoverIndex && rowYAxisCenter > mouseDiffTop) {
-        return
-      }
+      // if (dragIndex > hoverIndex && rowYAxisCenter > mouseDiffTop) {
+      //   return
+      // }
 
+      // moveRow(dragIndex, hoverIndex, isDragging);
+    },
+    drop(item: typeof withTypeRowData) {
+      const dragIndex = item.index;
+      const hoverIndex = index;
       moveRow(dragIndex, hoverIndex, isDragging);
+    },
+    collect() {
+      setToIndex(0)
+      setFromIndex(0)
     }
   })
 
   dragPreview(drop(rowRef))
+
+  const cls = useMemo(() => {
+    if (toIndex > fromIndex) {
+      return 'react-sort-table-row react-sort-table-body-row drop-it-bottom'
+    } else if (toIndex < fromIndex) {
+      return 'react-sort-table-row react-sort-table-body-row drop-it-top'
+    }
+    return 'react-sort-table-row react-sort-table-body-row'
+  }, [toIndex, fromIndex])
 
   return drag(<tr
       ref={rowRef}
       style={{
         opacity: isDragging ? '0.7' : '1'
       }}
-      className="react-sort-table-row react-sort-table-body-row"
+      className={cls}
     >
       {
         columns.map(column => {

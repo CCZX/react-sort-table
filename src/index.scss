@@ -1,8 +1,26 @@
 .react-sort-table {
   border-spacing: 0;
-  border-collapse:collapse;
+  border-collapse: collapse;
   word-wrap: break-word;
   word-break: break-all;
+
+  .react-sort-table-row {
+    &:hover {
+      background-color: #fafafa;
+    }
+    &:nth-child(2n) {
+      background-color: #fafafa;
+    }
+    .react-sort-table-cell {
+      box-sizing: border-box;
+      padding: 16px;
+      // border-bottom: 1px solid #f0f0f0;
+      &.sort-column {
+        cursor: move;
+      }
+    }
+  }
+
   &-head {
     .react-sort-table-head-row {
       background: #fafafa;
@@ -27,25 +45,20 @@
           }
         }
       }
-      
     }
   }
-  .react-sort-table-row {
-    &:hover {
-      background-color: #fafafa;
+  
+  .react-sort-table-body-row {
+    margin-top: 1px;
+    &.drop-it-bottom {
+      .react-sort-table-cell {
+        border-bottom: 1px solid #59c7f9;
+      }
     }
-    &:nth-child(2n) {
-      background-color: #fafafa;
-    }
-  }
-  .react-sort-table-cell {
-    box-sizing: border-box;
-    padding: 16px;
-    border-bottom: 1px solid #f0f0f0;
-    // background-color: rgb(134, 63, 105);
-    // background: #fafafa;
-    &.sort-column {
-      cursor: move;
+    &.drop-it-top {
+      .react-sort-table-cell {
+        border-top: 1px solid #59c7f9;
+      }
     }
   }
 }
