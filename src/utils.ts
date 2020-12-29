@@ -33,11 +33,5 @@ export const arrayMove = (array: any[], from: number, to: number) => {
 	return array;
 };
 
-/**
- *a,b,c 
- *oldItem:a
- _newIndex: 1
- */
-
 // [1,3,2,5,4]
 // moveArray([], 2, 4)
