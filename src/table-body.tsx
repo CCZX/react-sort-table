@@ -13,9 +13,9 @@ interface ITableBodyProps {
 const TableBody: FC<ITableBodyProps> = (props) => {
   const { columns, dataSource, onSortDataSource, columnsWidth } = props
 
-  const moveRow = useCallback((oldIndex, newIndex, isDragging?: boolean) => {
+  const moveRow = useCallback((oldIndex, newIndex) => {
     const arr = arrayMove(dataSource, oldIndex, newIndex)
-    onSortDataSource(arr, isDragging)
+    onSortDataSource(arr)
   }, [onSortDataSource, dataSource])
 
   return <tbody>

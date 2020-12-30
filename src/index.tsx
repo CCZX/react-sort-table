@@ -19,11 +19,6 @@ const SortTable: FC<ITableProps> = (props) => {
   const { dataSource, columns, useSort = true, align = 'center', onSortDataSource } = props
 
   const [columnsWidth, setColumnsWidth] = useState({})
-  const [data, setData] = useState(dataSource)
-
-  useEffect(() => {
-    setData(dataSource)
-  }, [dataSource])
 
   const whithSortColumns = useMemo<IColumnsItem[]>(() => {
     if (useSort) {
@@ -49,12 +44,8 @@ const SortTable: FC<ITableProps> = (props) => {
     })
   }, [columnsWidth])
 
-  const handleSortDataSource = useCallback((data: IDataSourceItem[], isDragging?: boolean) => {
-    // console.log(isDragging)
-    setData(data)
-    if (!isDragging) {
-      onSortDataSource(data)
-    }
+  const handleSortDataSource = useCallback((data: IDataSourceItem[]) => {
+    onSortDataSource(data)
   }, [onSortDataSource])
 
   return <DndProvider backend={HTML5Backend}>
@@ -70,7 +61,7 @@ const SortTable: FC<ITableProps> = (props) => {
         onColumnsWidthChange={handleColumnsWidthChange}
       />
       <TableBody
-        dataSource={data}
+        dataSource={dataSource}
         columns={whithSortColumns}
         columnsWidth={columnsWidth}
         onSortDataSource={handleSortDataSource}
