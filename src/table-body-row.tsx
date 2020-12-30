@@ -1,8 +1,7 @@
 import React, { FC, useMemo, useRef, useState } from 'react'
 import { DragSourceMonitor, useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
-import { SortIcon } from './icons'
-import { isNumber } from './utils'
-import { sortColumnKey, cssBlock } from './const'
+import TableBodyCell from './table-body-cell'
+import { cssBlock } from './const'
 import { IDataSourceItem, IColumnsItem, EDragTypes } from './interface'
 
 interface ITableBodyRowProps {
@@ -116,36 +115,12 @@ const TableBodyRow: FC<ITableBodyRowProps> = (props) => {
     >
       {
         columns.map(column => {
-          const cellData = rowData[column.dataKey] || null
-          const width = columnsWidth[column.key]
-          let parseWidth = 'auto'
-          if (isNumber(width)) {
-            parseWidth = `${width}px`
-          }
-          if (column.key === sortColumnKey) {
-            return <td
-              key={column.key}
-              style={{
-                width: parseWidth
-              }}
-              className={`${cssBlock}-cell ${cssBlock}-body-cell sort-column`}
-            >
-              <SortIcon />
-            </td>
-          }
-          return <td
+          return <TableBodyCell
             key={column.key}
-            style={{
-              width: parseWidth
-            }}
-            className={`${cssBlock}-cell ${cssBlock}-body-cell`}
-          >
-            {
-              column.render && typeof column.render === 'function'
-              ? column.render(cellData)
-              : cellData
-            }
-          </td>
+            column={column}
+            data={rowData[column.dataKey]}
+            width={columnsWidth[column.key]}
+          />
         })
       }
     </tr>

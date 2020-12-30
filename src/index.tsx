@@ -13,26 +13,28 @@ export interface ITableProps {
   /**表格列数据 */
   columns: IColumnsItem[]
   /**是否使用拖拽功能 */
-  useSort?: boolean
+  canDragSort?: boolean
   /**文本水平排列方式 */
   align?: alignPosition
   /**是否可以列的调整宽度 */
   canAdjustWidth: boolean
+  /**自定义拖拽图标 */
+  customDragSortIcon: JSX.Element
   /**拖拽回调函数 */
   onSortDataSource: (data: IDataSourceItem[]) => void
 }
 
 const DragSortTable: FC<ITableProps> = (props) => {
-  const { dataSource, columns, useSort = true, align = 'center', onSortDataSource } = props
+  const { dataSource, columns, canDragSort = true, align = 'center', onSortDataSource } = props
 
   const [columnsWidth, setColumnsWidth] = useState({})
 
   const whithSortColumns = useMemo<IColumnsItem[]>(() => {
-    if (useSort) {
+    if (canDragSort) {
       return [sortColumn, ...columns]
     }
     return columns
-  }, [columns, useSort])
+  }, [columns, canDragSort])
 
   useEffect(() => {
     const columnsWidth: strOrNumObj = whithSortColumns.reduce((mutl: strOrNumObj, column) => {

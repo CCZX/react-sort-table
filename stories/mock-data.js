@@ -20,7 +20,7 @@ export const columns = [
 export const data = [
   {
     key: '1',
-    name: '1111111111111',
+    // name: '1111111111111',
     age: 1,
     address: 'New York No. 1 Lake Park',
   },
