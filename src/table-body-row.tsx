@@ -5,7 +5,7 @@ import { isNumber } from './utils'
 import { sortColumnKey, cssBlock } from './const'
 import { IDataSourceItem, IColumnsItem, EDragTypes } from './interface'
 
-interface ITableRowProps {
+interface ITableBodyRowProps {
   dataSource: IDataSourceItem[]
   rowData: IDataSourceItem
   columns: IColumnsItem[]
@@ -14,10 +14,10 @@ interface ITableRowProps {
   moveRow: (oldIndex: number, newIndex: number, isDragging?: boolean) => void
 }
 
-const TableRow: FC<ITableRowProps> = (props) => {
+const TableBodyRow: FC<ITableBodyRowProps> = (props) => {
   const { rowData, columns, index, columnsWidth, moveRow } = props
 
-  const rowRef = useRef<HTMLTableRowElement>(null)
+  const tableBodyRowRef = useRef<HTMLTableRowElement>(null)
 
   /**
    * toIndex：更新后的位置
@@ -73,7 +73,7 @@ const TableRow: FC<ITableRowProps> = (props) => {
       fromIndex !== dragIndex && setFromIndex(dragIndex)
       toIndex !== hoverIndex && setToIndex(hoverIndex)
 
-      // const rowRect = rowRef.current?.getBoundingClientRect() || {} as DOMRect
+      // const rowRect = tableBodyRowRef.current?.getBoundingClientRect() || {} as DOMRect
       // const rowYAxisCenter = (rowRect?.bottom - rowRect?.top) / 2
       // console.log(rowRect, {rowYAxisCenter})
       // // 鼠标🖱位置
@@ -105,10 +105,10 @@ const TableRow: FC<ITableRowProps> = (props) => {
   })
 
   // 拖拽预览
-  dragPreview(drop(rowRef))
+  dragPreview(drop(tableBodyRowRef))
 
   return drag(<tr
-      ref={rowRef}
+      ref={tableBodyRowRef}
       style={{
         opacity: isDragging ? '0.7' : '1'
       }}
@@ -152,4 +152,4 @@ const TableRow: FC<ITableRowProps> = (props) => {
   )
 }
 
-export default TableRow
+export default TableBodyRow

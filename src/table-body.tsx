@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react'
-import TableRow from './table-row'
+import TableRow from './table-body-row'
 import { IDataSourceItem, IColumnsItem } from './interface'
 import { arrayMove } from './utils'
 import { cssBlock } from './const'
