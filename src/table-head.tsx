@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
+import React, { FC, useCallback, useLayoutEffect, useRef, useState } from 'react'
 import AdjustWidth from './adjust-width'
 import { isNumber } from './utils'
 import { cssBlock } from './const'
@@ -10,30 +10,26 @@ interface ITableHeadProps {
   onColumnsWidthChange: (data: strOrNumObj) => void
 }
 
-const TableHeadCell: FC<any> = ({ thData, width, onColumnsWidthChange }) => {
-  const { title, key } = thData
+const TableHeadCell: FC<any> = ({ item, width, onColumnsWidthChange }) => {
+  const { title, key } = item
 
   const cellRef = useRef<HTMLTableHeaderCellElement>(null)
-  const [clientWidth, setClientWidth] = useState<number>(0)
+  const [cellWidth, setCellWidth] = useState<number>(0)
 
   let parseWidth = 'auto'
-  if (!isNumber(width) && width !== 'auto') {
-    parseWidth = 'auto'
-  } else {
-    parseWidth = width === 'auto' ? width : width + 'px'
+  if (isNumber(width)) {
+    parseWidth = `${width}px`
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      const { width = 0 } = cellRef.current?.getBoundingClientRect() || {}
-      setClientWidth(width)
-    }, 0);
-  }, [])
+  useLayoutEffect(() => {
+    const { width = 0 } = cellRef.current?.getBoundingClientRect() || {}
+    setCellWidth(width)
+  }, [setCellWidth, cellRef.current])
 
   const handleWidthChange = useCallback((width) => {
     onColumnsWidthChange({[key]: width})
-    setClientWidth(width)
-  }, [onColumnsWidthChange])
+    setCellWidth(width)
+  }, [onColumnsWidthChange, setCellWidth])
 
   return <th
     ref={cellRef}
@@ -42,7 +38,7 @@ const TableHeadCell: FC<any> = ({ thData, width, onColumnsWidthChange }) => {
   >
     { title }
     <AdjustWidth
-      width={clientWidth}
+      width={cellWidth}
       onWidthChange={handleWidthChange}
     />
   </th>
@@ -57,7 +53,7 @@ const TableHeader: FC<ITableHeadProps> = (props) => {
         columns.map(item => {
           return <TableHeadCell
             key={item.key}
-            thData={item}
+            item={item}
             width={columnsWidth[item.key]}
             onColumnsWidthChange={onColumnsWidthChange}
           />

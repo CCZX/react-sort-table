@@ -1,8 +1,9 @@
 import React, { FC, useMemo, useRef, useState } from 'react'
 import { DragSourceMonitor, useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { SortIcon } from './icons'
-import { IDataSourceItem, IColumnsItem, EDragTypes } from './interface'
+import { isNumber } from './utils'
 import { sortColumnKey, cssBlock } from './const'
+import { IDataSourceItem, IColumnsItem, EDragTypes } from './interface'
 
 interface ITableRowProps {
   dataSource: IDataSourceItem[]
@@ -116,9 +117,17 @@ const TableRow: FC<ITableRowProps> = (props) => {
       {
         columns.map(column => {
           const cellData = rowData[column.dataKey] || null
+          const width = columnsWidth[column.key]
+          let parseWidth = 'auto'
+          if (isNumber(width)) {
+            parseWidth = `${width}px`
+          }
           if (column.key === sortColumnKey) {
             return <td
               key={column.key}
+              style={{
+                width: parseWidth
+              }}
               className={`${cssBlock}-cell ${cssBlock}-body-cell sort-column`}
             >
               <SortIcon />
@@ -127,7 +136,7 @@ const TableRow: FC<ITableRowProps> = (props) => {
           return <td
             key={column.key}
             style={{
-              width: columnsWidth[column.key]
+              width: parseWidth
             }}
             className={`${cssBlock}-cell ${cssBlock}-body-cell`}
           >

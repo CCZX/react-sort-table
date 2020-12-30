@@ -49,7 +49,7 @@ const DragSortTable: FC<ITableProps> = (props) => {
       ...columnsWidth,
       ...data
     })
-  }, [columnsWidth])
+  }, [columnsWidth, setColumnsWidth])
 
   const handleSortDataSource = useCallback((data: IDataSourceItem[]) => {
     onSortDataSource(data)
