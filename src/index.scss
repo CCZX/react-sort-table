@@ -1,17 +1,19 @@
-.react-sort-table {
+$cssBlock: 'react-drag-sort-table';
+
+.#{$cssBlock} {
   border-spacing: 0;
   border-collapse: collapse;
   word-wrap: break-word;
   word-break: break-all;
 
-  .react-sort-table-row {
+  &-row {
     &:hover {
       background-color: #fafafa;
     }
     &:nth-child(2n) {
       background-color: #fafafa;
     }
-    .react-sort-table-cell {
+    .#{$cssBlock}-cell {
       box-sizing: border-box;
       padding: 16px;
       // border-bottom: 1px solid #f0f0f0;
@@ -22,9 +24,9 @@
   }
 
   &-head {
-    .react-sort-table-head-row {
+    &-row {
       background: #fafafa;
-      .react-sort-table-cell {
+      .#{$cssBlock}-cell {
         position: relative;
         &:hover {
           .adjust-width-flag {
@@ -47,17 +49,19 @@
       }
     }
   }
-  
-  .react-sort-table-body-row {
-    margin-top: 1px;
-    &.drop-it-bottom {
-      .react-sort-table-cell {
-        border-bottom: 1px solid #59c7f9;
+
+  &-body {
+    &-row {
+      margin-top: 1px;
+      &.drop-it-bottom {
+        .#{$cssBlock}-cell {
+          border-bottom: 1px solid #59c7f9;
+        }
       }
-    }
-    &.drop-it-top {
-      .react-sort-table-cell {
-        border-top: 1px solid #59c7f9;
+      &.drop-it-top {
+        .#{$cssBlock}-cell {
+          border-top: 1px solid #59c7f9;
+        }
       }
     }
   }

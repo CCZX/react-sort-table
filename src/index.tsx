@@ -2,20 +2,27 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import TableBody from './table-body'
-import TableHeader from './table-header';
+import TableHeader from './table-head';
 import { IDataSourceItem, IColumnsItem, alignPosition } from './interface'
-import { sortColumn } from './const'
+import { sortColumn, cssBlock } from './const'
 import './index.scss'
 
 export interface ITableProps {
+  /**表格数据 */
   dataSource: IDataSourceItem[]
+  /**表格列数据 */
   columns: IColumnsItem[]
+  /**是否使用拖拽功能 */
   useSort?: boolean
+  /**文本水平排列方式 */
   align?: alignPosition
+  /**是否可以列的调整宽度 */
+  canAdjustWidth: boolean
+  /**拖拽回调函数 */
   onSortDataSource: (data: IDataSourceItem[]) => void
 }
 
-const SortTable: FC<ITableProps> = (props) => {
+const DragSortTable: FC<ITableProps> = (props) => {
   const { dataSource, columns, useSort = true, align = 'center', onSortDataSource } = props
 
   const [columnsWidth, setColumnsWidth] = useState({})
@@ -50,7 +57,7 @@ const SortTable: FC<ITableProps> = (props) => {
 
   return <DndProvider backend={HTML5Backend}>
     <table
-      className="react-sort-table"
+      className={cssBlock}
       style={{
         textAlign: align
       }}
@@ -70,19 +77,4 @@ const SortTable: FC<ITableProps> = (props) => {
   </DndProvider>
 };
 
-export default SortTable
-
-
-// export interface Props extends HTMLAttributes<HTMLDivElement> {
-//   /** custom content, defaults to 'the snozzberries taste like snozzberries' */
-//   children?: ReactChild;
-// }
-
-// // Please do not use types off of a default export module or else Storybook Docs will suffer.
-// // see: https://github.com/storybookjs/storybook/issues/9556
-// /**
-//  * A custom Thing component. Neat!
-//  */
-// export const Thing: FC<Props> = ({ children }) => {
-//   return <div>{children || `the snozzberries taste like snozzberries`}</div>;
-// };
+export default DragSortTable

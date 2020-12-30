@@ -1,17 +1,16 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import AdjustWidth from './adjust-width'
 import { isNumber } from './utils'
+import { cssBlock } from './const'
 import { IColumnsItem } from './interface'
 
-interface ITableHeaderProps {
+interface ITableHeadProps {
   columns: IColumnsItem[]
   columnsWidth: strOrNumObj
   onColumnsWidthChange: (data: strOrNumObj) => void
 }
 
-
-
-const TableHeaderCell: FC<any> = ({ thData, width, onColumnsWidthChange }) => {
+const TableHeadCell: FC<any> = ({ thData, width, onColumnsWidthChange }) => {
   const { title, key } = thData
 
   const cellRef = useRef<HTMLTableHeaderCellElement>(null)
@@ -36,7 +35,11 @@ const TableHeaderCell: FC<any> = ({ thData, width, onColumnsWidthChange }) => {
     setClientWidth(width)
   }, [onColumnsWidthChange])
 
-  return <th ref={cellRef} className='react-sort-table-cell' style={{width: parseWidth}}>
+  return <th
+    ref={cellRef}
+    className={`${cssBlock}-cell ${cssBlock}-head-cell`}
+    style={{width: parseWidth}}
+  >
     { title }
     <AdjustWidth
       width={clientWidth}
@@ -45,14 +48,14 @@ const TableHeaderCell: FC<any> = ({ thData, width, onColumnsWidthChange }) => {
   </th>
 }
 
-const TableHeader: FC<ITableHeaderProps> = (props) => {
+const TableHeader: FC<ITableHeadProps> = (props) => {
   const { columns, columnsWidth, onColumnsWidthChange } = props
 
-  return <thead className='react-sort-table-head'>
-    <tr className="react-sort-table-row react-sort-table-head-row">
+  return <thead className={`${cssBlock}-head`}>
+    <tr className={`${cssBlock}-row ${cssBlock}-head-row`}>
       {
         columns.map(item => {
-          return <TableHeaderCell
+          return <TableHeadCell
             key={item.key}
             thData={item}
             width={columnsWidth[item.key]}

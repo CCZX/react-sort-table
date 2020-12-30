@@ -6,6 +6,7 @@ interface IAdjustWidthProps {
 }
 
 const AdjustWidth: FC<IAdjustWidthProps> = ({ width, onWidthChange }) => {
+  let startX = 0
 
   const handleMouseMove = useCallback((e) => {
     const { clientX } = e
@@ -17,7 +18,6 @@ const AdjustWidth: FC<IAdjustWidthProps> = ({ width, onWidthChange }) => {
     document.removeEventListener('mousemove', handleMouseMove)
   }, [handleMouseMove])
 
-  let startX = 0
   const handleMouseDown = useCallback((e) => {
     const { clientX } = e
     startX = clientX

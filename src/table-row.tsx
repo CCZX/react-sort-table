@@ -2,7 +2,7 @@ import React, { FC, useMemo, useRef, useState } from 'react'
 import { DragSourceMonitor, useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { SortIcon } from './icons'
 import { IDataSourceItem, IColumnsItem, EDragTypes } from './interface'
-import { sortColumnKey } from './const'
+import { sortColumnKey, cssBlock } from './const'
 
 interface ITableRowProps {
   dataSource: IDataSourceItem[]
@@ -17,8 +17,28 @@ const TableRow: FC<ITableRowProps> = (props) => {
   const { rowData, columns, index, columnsWidth, moveRow } = props
 
   const rowRef = useRef<HTMLTableRowElement>(null)
+
+  /**
+   * toIndex：更新后的位置
+   * fromIndex：更新前的位置
+   */
   const [toIndex, setToIndex] = useState(0)
   const [fromIndex, setFromIndex] = useState(0)
+
+  /**
+   * 根据formIndex和toIndex判断类名
+   */
+  const tableBodyRowCls = useMemo(() => {
+    const normalCls = `${cssBlock}-row ${cssBlock}-body-row`
+    if (toIndex > fromIndex) {
+      // 向下拖动，drop目标的bottom需要高亮
+      return `${normalCls} drop-it-bottom`
+    } else if (toIndex < fromIndex) {
+      // 向上拖动，drop目标的top需要高亮
+      return `${normalCls} drop-it-top`
+    }
+    return normalCls
+  }, [toIndex, fromIndex])
 
   const withTypeRowData = {
     ...rowData,
@@ -42,7 +62,6 @@ const TableRow: FC<ITableRowProps> = (props) => {
   const [, drop] = useDrop({
     accept: EDragTypes.tableRow,
     hover(item: typeof withTypeRowData, monitor: DropTargetMonitor) {
-      console.log(monitor)
       const dragIndex = item.index;
       const hoverIndex = index;
       
@@ -84,23 +103,15 @@ const TableRow: FC<ITableRowProps> = (props) => {
     }
   })
 
+  // 拖拽预览
   dragPreview(drop(rowRef))
-
-  const cls = useMemo(() => {
-    if (toIndex > fromIndex) {
-      return 'react-sort-table-row react-sort-table-body-row drop-it-bottom'
-    } else if (toIndex < fromIndex) {
-      return 'react-sort-table-row react-sort-table-body-row drop-it-top'
-    }
-    return 'react-sort-table-row react-sort-table-body-row'
-  }, [toIndex, fromIndex])
 
   return drag(<tr
       ref={rowRef}
       style={{
         opacity: isDragging ? '0.7' : '1'
       }}
-      className={cls}
+      className={tableBodyRowCls}
     >
       {
         columns.map(column => {
@@ -108,7 +119,7 @@ const TableRow: FC<ITableRowProps> = (props) => {
           if (column.key === sortColumnKey) {
             return <td
               key={column.key}
-              className="react-sort-table-cell sort-column"
+              className={`${cssBlock}-cell ${cssBlock}-body-cell sort-column`}
             >
               <SortIcon />
             </td>
@@ -118,7 +129,7 @@ const TableRow: FC<ITableRowProps> = (props) => {
             style={{
               width: columnsWidth[column.key]
             }}
-            className="react-sort-table-cell"
+            className={`${cssBlock}-cell ${cssBlock}-body-cell`}
           >
             {
               column.render && typeof column.render === 'function'

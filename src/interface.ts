@@ -1,5 +1,3 @@
-import React from 'react'
-
 export interface IColumnsItem {
   key: strOrNum
   dataKey: strOrNum
@@ -16,6 +14,7 @@ export interface IDataSourceItem {
 
 export type alignPosition = 'left' | 'center' | 'right'
 
+// 拖拽类型
 export enum EDragTypes {
   tableRow = 'tableRow'
 }

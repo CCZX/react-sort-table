@@ -2,6 +2,7 @@ import React, { FC, useCallback } from 'react'
 import TableRow from './table-row'
 import { IDataSourceItem, IColumnsItem } from './interface'
 import { arrayMove } from './utils'
+import { cssBlock } from './const'
 
 interface ITableBodyProps {
   dataSource: IDataSourceItem[]
@@ -18,7 +19,7 @@ const TableBody: FC<ITableBodyProps> = (props) => {
     onSortDataSource(arr)
   }, [onSortDataSource, dataSource])
 
-  return <tbody>
+  return <tbody className={`${cssBlock}-body`}>
     {
       dataSource.map((rowData, index) => {
         return <TableRow
