@@ -7,6 +7,7 @@ $cssBlock: 'react-drag-sort-table';
   word-break: break-all;
 
   &-row {
+    transition: all .2s ease-in-out;
     &:hover {
       background-color: #fafafa;
     }
