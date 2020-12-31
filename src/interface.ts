@@ -4,6 +4,7 @@ export interface IColumnsItem {
   title: strOrNum
   width?: string
   required?: boolean
+  helpMessage?: string
   render?: (data: any) => React.ReactNode
 }
 

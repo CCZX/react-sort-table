@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import TableBody from './table-body'
-import TableHeader from './table-head';
+import TableHead from './table-head';
 import { IDataSourceItem, IColumnsItem, alignPosition } from './interface'
 import { sortColumn, cssBlock } from './const'
 import './index.scss'
@@ -20,6 +20,8 @@ export interface ITableProps {
   canAdjustWidth: boolean
   /**自定义拖拽图标 */
   customDragSortIcon: JSX.Element
+  /**删除列按钮 */
+  showDeleteColumn: boolean
   /**拖拽回调函数 */
   onSortDataSource: (data: IDataSourceItem[]) => void
 }
@@ -64,7 +66,7 @@ const DragSortTable: FC<ITableProps> = (props) => {
         textAlign: align
       }}
     >
-      <TableHeader
+      <TableHead
         columns={whithSortColumns}
         columnsWidth={columnsWidth}
         onColumnsWidthChange={handleColumnsWidthChange}
