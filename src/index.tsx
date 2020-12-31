@@ -22,6 +22,8 @@ export interface ITableProps {
   customDragSortIcon: JSX.Element
   /**删除列按钮 */
   showDeleteColumn: boolean
+  /**table的宽度，默认是父元素宽度的100% */
+  tableWidth: number
   /**拖拽回调函数 */
   onSortDataSource: (data: IDataSourceItem[]) => void
 }
@@ -31,6 +33,7 @@ const DragSortTable: FC<ITableProps> = (props) => {
 
   const [columnsWidth, setColumnsWidth] = useState({})
 
+  // 添加拖拽排序列
   const whithSortColumns = useMemo<IColumnsItem[]>(() => {
     if (canDragSort) {
       return [sortColumn, ...columns]

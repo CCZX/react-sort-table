@@ -9,6 +9,7 @@ export const columns = [
     title: 'Age',
     dataKey: 'age',
     key: 'age',
+    required: true
   },
   {
     title: 'Address',

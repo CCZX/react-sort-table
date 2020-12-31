@@ -14,4 +14,10 @@ yarn add react-drag-sort-table
 
 |  prop   | description  | default value | required |
 |  ----   |     ----     |      ----     |   ----   |
-|       |  |   |  |
+| dataSource |  |   |  |
+| columns |  |   |  |
+| canDragSort |  |   |  |
+| canAdjustWidth |  |   |  |
+| customDragSortIcon |  |   |  |
+| align |  |   |  |
+| onSortDataSource |  |   |  |

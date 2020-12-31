@@ -28,10 +28,12 @@ const Template: Story<ITableProps> = args => {
     setDataSource(data)
   }, [])
 
-  return <Table {...args}
-    dataSource={dataSource}
-    onSortDataSource={handleSort}
-  />
+  return <div style={{width: '500px'}}>
+    <Table {...args}
+      dataSource={dataSource}
+      onSortDataSource={handleSort}
+    />
+  </div>
 }
 
 // // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test

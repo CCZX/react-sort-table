@@ -10,8 +10,8 @@ interface ITableHeadProps {
   onColumnsWidthChange: (data: strOrNumObj) => void
 }
 
-const TableHeadCell: FC<any> = ({ item, width, onColumnsWidthChange }) => {
-  const { title, key } = item
+const TableHeadCell: FC<any> = ({ item, width, isLast, onColumnsWidthChange }) => {
+  const { title, key, required } = item
 
   const cellRef = useRef<HTMLTableHeaderCellElement>(null)
   const [cellWidth, setCellWidth] = useState<number>(0)
@@ -36,11 +36,16 @@ const TableHeadCell: FC<any> = ({ item, width, onColumnsWidthChange }) => {
     className={`${cssBlock}-cell ${cssBlock}-head-cell`}
     style={{width: parseWidth}}
   >
+    {
+      required && <span className="required-icon">*</span>
+    }
     { title }
-    <AdjustWidth
-      width={cellWidth}
-      onWidthChange={handleWidthChange}
-    />
+    {
+      !isLast && <AdjustWidth
+        width={cellWidth}
+        onWidthChange={handleWidthChange}
+      />
+    }
   </th>
 }
 
@@ -50,9 +55,10 @@ const TableHeader: FC<ITableHeadProps> = (props) => {
   return <thead className={`${cssBlock}-head`}>
     <tr className={`${cssBlock}-row ${cssBlock}-head-row`}>
       {
-        columns.map(item => {
+        columns.map((item, index) => {
           return <TableHeadCell
             key={item.key}
+            isLast={index === columns.length - 1}
             item={item}
             width={columnsWidth[item.key]}
             onColumnsWidthChange={onColumnsWidthChange}
