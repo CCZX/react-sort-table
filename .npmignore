@@ -1,0 +1,8 @@
+.storybook
+example
+node_modules
+src
+stories
+temp
+test
+.gitignore

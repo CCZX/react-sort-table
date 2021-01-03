@@ -4,7 +4,10 @@ export const columns = [
     dataKey: 'name',
     key: 'name',
     width: '80',
-    helpMessage: '帮助信息'
+    helpMessage: '帮助信息',
+    render(name) {
+      return <input value={name} />
+    }
   },
   {
     title: 'Age',
@@ -22,20 +25,20 @@ export const columns = [
 export const data = [
   {
     key: '1',
-    // name: '1111111111111',
-    age: 1,
-    address: 'New York No. 1 Lake Park',
+    name: '张三',
+    age: 21,
+    address: '幸福村1号',
   },
   {
     key: '2',
-    name: '2222222222222',
-    age: 2,
-    address: 'London No. 1 Lake Park',
+    name: '李四',
+    age: 22,
+    address: '幸福村2号',
   },
   {
     key: '3',
-    name: '33333333333333',
-    age: 3,
-    address: 'Sidney No. 1 Lake Park',
+    name: '王五',
+    age: 23,
+    address: '幸福村3号',
   },
 ]

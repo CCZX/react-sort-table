@@ -1,5 +1,6 @@
 {
   "version": "0.1.0",
+  "name": "react-drag-sort-table",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -35,7 +36,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "react-sort-table",
   "author": "chenchao",
   "module": "dist/react-sort-table.esm.js",
   "size-limit": [
