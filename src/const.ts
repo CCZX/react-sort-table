@@ -12,3 +12,7 @@ export const sortColumn: IColumnsItem = {
   title: '排序',
   width: '70',
 }
+
+export const tableCellMinWidth = 70
+
+export const tableCellMaxWidth = 200

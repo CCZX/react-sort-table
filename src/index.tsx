@@ -7,7 +7,7 @@ import { IDataSourceItem, IColumnsItem, alignPosition } from './interface'
 import { sortColumn, cssBlock } from './const'
 import './index.scss'
 
-export interface ITableProps {
+export interface IDragSortTableProps {
   /**表格数据 */
   dataSource: IDataSourceItem[]
   /**表格列数据 */
@@ -28,7 +28,7 @@ export interface ITableProps {
   onSortDataSource: (data: IDataSourceItem[]) => void
 }
 
-const DragSortTable: FC<ITableProps> = (props) => {
+const DragSortTable: FC<IDragSortTableProps> = (props) => {
   const { dataSource, columns, canDragSort = true, align = 'center', onSortDataSource } = props
 
   const [columnsWidth, setColumnsWidth] = useState({})
