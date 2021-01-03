@@ -10,6 +10,7 @@ const AdjustWidth: FC<IAdjustWidthProps> = ({ width, onWidthChange }) => {
   let startX = 0
 
   const handleMouseMove = useCallback((e) => {
+    e.preventDefault()
     const { clientX } = e
     const diffX = clientX - startX
     let nextWidth = Number(width) + diffX
