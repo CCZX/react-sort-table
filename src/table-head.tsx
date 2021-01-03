@@ -5,13 +5,14 @@ import { cssBlock } from './const'
 import { IColumnsItem } from './interface'
 
 interface ITableHeadProps {
+  canAdjustWidth: boolean
   columns: IColumnsItem[]
   columnsWidth: strOrNumObj
   onColumnsWidthChange: (data: strOrNumObj) => void
 }
 
-const TableHeadCell: FC<any> = ({ item, width, isLast, onColumnsWidthChange }) => {
-  const { title, key, required } = item
+const TableHeadCell: FC<any> = ({ item, width, isLast, canAdjustWidth, onColumnsWidthChange }) => {
+  const { title, key, required, helpMessage } = item
 
   const cellRef = useRef<HTMLTableHeaderCellElement>(null)
   const [cellWidth, setCellWidth] = useState<number>(0)
@@ -41,16 +42,19 @@ const TableHeadCell: FC<any> = ({ item, width, isLast, onColumnsWidthChange }) =
     }
     { title }
     {
-      !isLast && <AdjustWidth
+      !isLast && canAdjustWidth && <AdjustWidth
         width={cellWidth}
         onWidthChange={handleWidthChange}
       />
+    }
+    {
+      !!helpMessage && <span className="help-tips" />
     }
   </th>
 }
 
 const TableHeader: FC<ITableHeadProps> = (props) => {
-  const { columns, columnsWidth, onColumnsWidthChange } = props
+  const { canAdjustWidth, columns, columnsWidth, onColumnsWidthChange } = props
 
   return <thead className={`${cssBlock}-head`}>
     <tr className={`${cssBlock}-row ${cssBlock}-head-row`}>
@@ -58,6 +62,7 @@ const TableHeader: FC<ITableHeadProps> = (props) => {
         columns.map((item, index) => {
           return <TableHeadCell
             key={item.key}
+            canAdjustWidth={canAdjustWidth}
             isLast={index === columns.length - 1}
             item={item}
             width={columnsWidth[item.key]}

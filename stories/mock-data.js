@@ -4,6 +4,7 @@ export const columns = [
     dataKey: 'name',
     key: 'name',
     width: '80',
+    helpMessage: '帮助信息'
   },
   {
     title: 'Age',
