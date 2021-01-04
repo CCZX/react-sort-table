@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import Table, { ITableProps } from '../src';
+import Table, { IDragSortTableProps } from '../src';
 import { data, columns } from './mock-data'
 import { useCallback, useState } from '@storybook/addons';
 
@@ -21,7 +21,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<ITableProps> = args => {
+const Template: Story<IDragSortTableProps> = args => {
   const [dataSource, setDataSource] = useState(data)
 
   const handleSort = useCallback((data) => {

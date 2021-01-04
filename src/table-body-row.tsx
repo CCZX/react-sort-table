@@ -1,5 +1,5 @@
 import React, { FC, useMemo, useRef, useState } from 'react'
-import { DragSourceMonitor, useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
+import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd'
 import TableBodyCell from './table-body-cell'
 import { cssBlock } from './const'
 import { IDataSourceItem, IColumnsItem, EDragTypes } from './interface'
@@ -61,7 +61,7 @@ const TableBodyRow: FC<ITableBodyRowProps> = (props) => {
 
   const [, drop] = useDrop({
     accept: EDragTypes.tableRow,
-    hover(item: typeof withTypeRowData, monitor: DropTargetMonitor) {
+    hover(item: typeof withTypeRowData) {
       const dragIndex = item.index;
       const hoverIndex = index;
       
