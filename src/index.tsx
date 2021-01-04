@@ -17,13 +17,13 @@ export interface IDragSortTableProps {
   /**文本水平排列方式 */
   align?: alignPosition
   /**是否可以列的调整宽度 */
-  canAdjustWidth: boolean
+  canAdjustWidth?: boolean
   /**自定义拖拽图标 */
-  customDragSortIcon: JSX.Element
+  customDragSortIcon?: JSX.Element
   /**删除列按钮 */
-  showDeleteColumn: boolean
+  showDeleteColumn?: boolean
   /**table的宽度，默认是父元素宽度的100% */
-  tableWidth: number
+  tableWidth?: number
   /**拖拽回调函数 */
   onSortDataSource: (data: IDataSourceItem[]) => void
 }
