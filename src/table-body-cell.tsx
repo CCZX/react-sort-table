@@ -6,12 +6,14 @@ import { IColumnsItem, IDataSourceItem } from './interface'
 
 interface ITableBodyCellProps {
   column: IColumnsItem
-  data: IDataSourceItem
+  rowData: IDataSourceItem
   width: strOrNum
+  rowIndex: number
 }
 
-const TableBodyCell: FC<ITableBodyCellProps> = ({ column, data, width }) => {
+const TableBodyCell: FC<ITableBodyCellProps> = ({ column, rowData, width, rowIndex }) => {
   const isDragSortColumn = column.key === sortColumnKey
+  const text = rowData[column.dataKey]
 
   let parseWidth = 'auto'
   if (isNumber(width)) {
@@ -23,7 +25,7 @@ const TableBodyCell: FC<ITableBodyCellProps> = ({ column, data, width }) => {
     cls = cls + ' sort-column'
   }
 
-  const child = typeof column.render === 'function' ? column.render(data) : data
+  const child = typeof column.render === 'function' ? column.render(text, rowData, rowIndex) : text
 
   return <td
     className={cls}

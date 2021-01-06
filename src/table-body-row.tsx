@@ -8,13 +8,13 @@ interface ITableBodyRowProps {
   dataSource: IDataSourceItem[]
   rowData: IDataSourceItem
   columns: IColumnsItem[]
-  index: number
+  rowIndex: number
   columnsWidth: strOrNumObj
   moveRow: (oldIndex: number, newIndex: number, isDragging?: boolean) => void
 }
 
 const TableBodyRow: FC<ITableBodyRowProps> = (props) => {
-  const { rowData, columns, index, columnsWidth, moveRow } = props
+  const { rowData, columns, rowIndex, columnsWidth, moveRow } = props
 
   const tableBodyRowRef = useRef<HTMLTableRowElement>(null)
 
@@ -42,7 +42,7 @@ const TableBodyRow: FC<ITableBodyRowProps> = (props) => {
 
   const withTypeRowData = {
     ...rowData,
-    index: index,
+    index: rowIndex,
     type: EDragTypes.tableRow
   }
 
@@ -63,7 +63,7 @@ const TableBodyRow: FC<ITableBodyRowProps> = (props) => {
     accept: EDragTypes.tableRow,
     hover(item: typeof withTypeRowData) {
       const dragIndex = item.index;
-      const hoverIndex = index;
+      const hoverIndex = rowIndex;
       
       if (dragIndex === hoverIndex) {
         return
@@ -94,7 +94,7 @@ const TableBodyRow: FC<ITableBodyRowProps> = (props) => {
     },
     drop(item: typeof withTypeRowData) {
       const dragIndex = item.index;
-      const hoverIndex = index;
+      const hoverIndex = rowIndex;
       moveRow(dragIndex, hoverIndex, isDragging);
     },
     collect() {
@@ -114,12 +114,13 @@ const TableBodyRow: FC<ITableBodyRowProps> = (props) => {
       className={tableBodyRowCls}
     >
       {
-        columns.map(column => {
+        columns.map((column) => {
           return <TableBodyCell
             key={column.key}
             column={column}
-            data={rowData[column.dataKey]}
+            rowData={rowData}
             width={columnsWidth[column.key]}
+            rowIndex={rowIndex}
           />
         })
       }

@@ -5,7 +5,7 @@ export interface IColumnsItem {
   width?: string
   required?: boolean
   helpMessage?: string
-  render?: (data: any) => React.ReactNode
+  render?: (text: any, row?: IDataSourceItem, rowIndex?: number) => React.ReactNode
 }
 
 export interface IDataSourceItem {

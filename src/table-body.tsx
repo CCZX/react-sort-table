@@ -27,7 +27,7 @@ const TableBody: FC<ITableBodyProps> = (props) => {
           dataSource={dataSource}
           rowData={rowData}
           columns={columns}
-          index={index}
+          rowIndex={index}
           columnsWidth={columnsWidth}
           moveRow={moveRow}
         />
