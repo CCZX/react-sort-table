@@ -12,7 +12,7 @@ interface ITableHeadProps {
 }
 
 const TableHeadCell: FC<any> = ({ item, width, isLast, canAdjustWidth, onColumnsWidthChange }) => {
-  const { title, key, required, helpMessage } = item
+  const { title, key, required } = item
 
   const cellRef = useRef<HTMLTableHeaderCellElement>(null)
   const [cellWidth, setCellWidth] = useState<number>(0)
@@ -46,9 +46,6 @@ const TableHeadCell: FC<any> = ({ item, width, isLast, canAdjustWidth, onColumns
         width={cellWidth}
         onWidthChange={handleWidthChange}
       />
-    }
-    {
-      !!helpMessage && <span className="help-tips" />
     }
   </th>
 }
