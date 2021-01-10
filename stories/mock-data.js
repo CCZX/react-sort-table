@@ -19,6 +19,11 @@ export const columns = [
     dataKey: 'address',
     key: 'address',
   },
+  {
+    title: 'clazz',
+    dataKey: 'clazz',
+    key: 'clazz',
+  },
 ]
 
 export const data = [
@@ -27,17 +32,20 @@ export const data = [
     name: '张三',
     age: 21,
     address: '幸福村1号',
+    clazz: '6-1',
   },
   {
     key: '2',
     name: '李四',
     age: 22,
     address: '幸福村2号',
+    clazz: '5-1',
   },
   {
     key: '3',
     name: '王五',
     age: 23,
     address: '幸福村3号',
+    clazz: '4-1',
   },
 ]

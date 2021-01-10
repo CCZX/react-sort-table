@@ -41,7 +41,7 @@ const Template: Story<IDragSortTableProps> = args => {
       }
     },
     {
-      title: 'AgeAgeAgeAgeAge',
+      title: 'Age',
       dataKey: 'age',
       key: 'age',
       required: true
@@ -50,6 +50,11 @@ const Template: Story<IDragSortTableProps> = args => {
       title: 'Address',
       dataKey: 'address',
       key: 'address',
+    },
+    {
+      title: 'clazz',
+      dataKey: 'clazz',
+      key: 'clazz',
     },
   ]
 

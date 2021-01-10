@@ -7,11 +7,11 @@ import { IColumnsItem } from './interface'
 interface ITableHeadProps {
   canAdjustWidth: boolean
   columns: IColumnsItem[]
-  columnsWidth: strOrNumObj
+  columnsWidth: {[key: string]: string}
   updateColumnsWidth: (data: {[key: string]: string}) => void
 }
 
-const TableHeadCell: FC<any> = ({ grow, item, width, isLast, canAdjustWidth, onColumnWidthChange }) => {
+const TableHeadCell: FC<any> = ({ item, width, isLast, canAdjustWidth, onColumnWidthChange }) => {
   const { title, key, required } = item
 
   const cellRef = useRef<HTMLTableHeaderCellElement>(null)
@@ -21,12 +21,11 @@ const TableHeadCell: FC<any> = ({ grow, item, width, isLast, canAdjustWidth, onC
     if (isNumber(item.width)) {
       return `0 0 ${parseWidth}`
     }
-    // if (parseWidth !== 'auto' && !grow) {
     if (parseWidth !== 'auto') {
       return `0 0 ${parseWidth}`
     }
     return `1 1 ${parseWidth}`
-  }, [width, key, dragSortColumnKey, grow])
+  }, [width, key, dragSortColumnKey])
 
   const handleWidthChange = useCallback((width) => {
     onColumnWidthChange({[key]: width})
@@ -57,7 +56,18 @@ const TableHeadCell: FC<any> = ({ grow, item, width, isLast, canAdjustWidth, onC
 const TableHeader: FC<ITableHeadProps> = (props) => {
   const { canAdjustWidth, columns, columnsWidth, updateColumnsWidth } = props
   const headRowRef = useRef<HTMLDivElement>(null)
-  const [grow, setGrow] = useState(false)
+  const [adjustedWidthCloumns, setAdjustedWidthCloumns] = useState<string[]>([])
+
+  const getShouldResetWidthCols = useCallback((arr: string[]) => {
+    return columns.filter(item => {
+      return !arr.includes(String(item.key)) && !item.width
+    }).map(item => item.key)
+  }, [columns])
+
+  const getNextCol = useCallback((key) => {
+    const index = columns.findIndex(item => item.key === key)
+    return columns[index + 1].key
+  }, [columns])
 
   const calcColumnsWidth = useCallback(() => {
     if (!headRowRef.current) return
@@ -77,18 +87,31 @@ const TableHeader: FC<ITableHeadProps> = (props) => {
 
   useEffect(() => {
     const handleResize = debuounce(() => {
-      updateColumnsWidth({})
+      const resetWidthCols = getShouldResetWidthCols(adjustedWidthCloumns)
+      const resetWidths = resetWidthCols.reduce<{[key: string]: string}>((prev, curr) => {
+        prev[curr] = 'auto'
+        return prev
+      }, {})
+      updateColumnsWidth({ ...columnsWidth, ...resetWidths })
       calcColumnsWidth()
     }, 500)
     window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [updateColumnsWidth, calcColumnsWidth])
+  }, [updateColumnsWidth, calcColumnsWidth, adjustedWidthCloumns, columnsWidth])
 
   const handleColumnWidthChange = useCallback((width) => {
-    updateColumnsWidth({ ...columnsWidth, ...width })
-  }, [columnsWidth, updateColumnsWidth])
+    const key = Object.keys(width)[0]
+    const next = adjustedWidthCloumns.includes(key)
+     ? adjustedWidthCloumns
+     : [ ...adjustedWidthCloumns, key ]
+    setAdjustedWidthCloumns(next)
+    const nextKey = getNextCol(key)
+    const nextWidth = { [nextKey]: 'auto' }
+    updateColumnsWidth({ ...columnsWidth, ...width, ...nextWidth })
+    calcColumnsWidth()
+  }, [columnsWidth, updateColumnsWidth, adjustedWidthCloumns, calcColumnsWidth])
 
   return <div role="thead" className={`${cssBlock}-head`}>
     <div role="tr" ref={headRowRef} className={`${cssBlock}-row ${cssBlock}-head-row`}>
@@ -101,7 +124,6 @@ const TableHeader: FC<ITableHeadProps> = (props) => {
             item={item}
             width={columnsWidth[item.key] || item.width || 'auto'}
             onColumnWidthChange={handleColumnWidthChange}
-            grow={grow}
           />
         })
       }

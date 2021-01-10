@@ -47,7 +47,6 @@ const DragSortTable: FC<IDragSortTableProps> = (props) => {
   }, [onSortDataSource])
 
   const updateColumnsWidth = useCallback((widths) => {
-    console.log(widths, columnsWidth)
     if (!isEqual(columnsWidth, widths)) {
       setColumnsWidth(widths)
     }

@@ -8,12 +8,12 @@ interface IAdjustWidthProps {
 
 const AdjustWidth: FC<IAdjustWidthProps> = ({ width, onWidthChange }) => {
   let startX = 0
-
+  let nextWidth = 0
   const handleMouseMove = useCallback((e) => {
     e.preventDefault()
     const { clientX } = e
     const diffX = clientX - startX
-    let nextWidth = Number(width) + diffX
+    nextWidth = Number(width) + diffX
     nextWidth = nextWidth < tableCellMinWidth ? tableCellMinWidth : nextWidth
     // nextWidth = nextWidth > tableCellMaxWidth ? tableCellMaxWidth : nextWidth
     onWidthChange(nextWidth)
@@ -28,6 +28,7 @@ const AdjustWidth: FC<IAdjustWidthProps> = ({ width, onWidthChange }) => {
     startX = clientX
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', () => {
+      // onWidthChange(nextWidth)
       document.removeEventListener('mousemove', handleMouseMove)
     })
   }, [handleMouseMove, handleMouseLeave])
