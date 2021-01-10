@@ -63,7 +63,8 @@ const DragSortTable: FC<IDragSortTableProps> = (props) => {
   }, [onSortDataSource])
 
   return <DndProvider backend={HTML5Backend}>
-    <table
+    <div
+      role="table"
       className={cssBlock}
       style={{
         textAlign: align
@@ -81,7 +82,7 @@ const DragSortTable: FC<IDragSortTableProps> = (props) => {
         columnsWidth={columnsWidth}
         onSortDataSource={handleSortDataSource}
       />
-    </table>
+    </div>
   </DndProvider>
 };
 

@@ -106,7 +106,8 @@ const TableBodyRow: FC<ITableBodyRowProps> = (props) => {
   // 拖拽预览
   dragPreview(drop(tableBodyRowRef))
 
-  return drag(<tr
+  return drag(<div
+      role="tr"
       ref={tableBodyRowRef}
       style={{
         opacity: isDragging ? '0.7' : '1'
@@ -124,7 +125,7 @@ const TableBodyRow: FC<ITableBodyRowProps> = (props) => {
           />
         })
       }
-    </tr>
+    </div>
   )
 }
 

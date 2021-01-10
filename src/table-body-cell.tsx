@@ -27,16 +27,18 @@ const TableBodyCell: FC<ITableBodyCellProps> = ({ column, rowData, width, rowInd
 
   const child = typeof column.render === 'function' ? column.render(text, rowData, rowIndex) : text
 
-  return <td
+  return <span
+    role="td"
     className={cls}
     style={{
-      width: parseWidth
+      width: parseWidth,
+      flexBasis: parseWidth
     }}
   >
     {
       isDragSortColumn ? <DragSortIcon /> : child
     }
-  </td>
+  </span>
 }
 
 export default TableBodyCell

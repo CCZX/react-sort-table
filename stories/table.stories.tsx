@@ -24,6 +24,36 @@ export default meta;
 const Template: Story<IDragSortTableProps> = args => {
   const [dataSource, setDataSource] = useState(data)
 
+  const handleNameChange = useCallback((e, index) => {
+    dataSource[index].name = e.target.value
+    setDataSource(dataSource)
+    console.log(e.target.value)
+  }, [dataSource])
+
+  const columns = [
+    {
+      title: 'Name',
+      dataKey: 'name',
+      key: 'name',
+      width: '80',
+      render(name, row, index) {
+        console.log(index)
+        return <input value={name} onChange={(e) => handleNameChange(e, index)} />
+      }
+    },
+    {
+      title: 'Age',
+      dataKey: 'age',
+      key: 'age',
+      required: true
+    },
+    {
+      title: 'Address',
+      dataKey: 'address',
+      key: 'address',
+    },
+  ]
+
   const handleSort = useCallback((data) => {
     setDataSource(data)
   }, [])
@@ -32,6 +62,7 @@ const Template: Story<IDragSortTableProps> = args => {
     <Table {...args}
       dataSource={dataSource}
       onSortDataSource={handleSort}
+      columns={columns}
     />
   </div>
 }

@@ -32,10 +32,14 @@ const TableHeadCell: FC<any> = ({ item, width, isLast, canAdjustWidth, onColumns
     setCellWidth(width)
   }, [onColumnsWidthChange, setCellWidth])
 
-  return <th
+  return <span
+    role="th"
     ref={cellRef}
     className={`${cssBlock}-cell ${cssBlock}-head-cell`}
-    style={{width: parseWidth}}
+    style={{
+      width: parseWidth,
+      flexBasis: parseWidth,
+    }}
   >
     {
       required && <span className="required-icon">*</span>
@@ -47,14 +51,14 @@ const TableHeadCell: FC<any> = ({ item, width, isLast, canAdjustWidth, onColumns
         onWidthChange={handleWidthChange}
       />
     }
-  </th>
+  </span>
 }
 
 const TableHeader: FC<ITableHeadProps> = (props) => {
   const { canAdjustWidth, columns, columnsWidth, onColumnsWidthChange } = props
 
-  return <thead className={`${cssBlock}-head`}>
-    <tr className={`${cssBlock}-row ${cssBlock}-head-row`}>
+  return <div role="thead" className={`${cssBlock}-head`}>
+    <div role="tr" className={`${cssBlock}-row ${cssBlock}-head-row`}>
       {
         columns.map((item, index) => {
           return <TableHeadCell
@@ -67,8 +71,8 @@ const TableHeader: FC<ITableHeadProps> = (props) => {
           />
         })
       }
-    </tr>
-  </thead>
+    </div>
+  </div>
 }
 
 export default TableHeader

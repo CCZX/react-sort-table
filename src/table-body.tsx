@@ -19,7 +19,7 @@ const TableBody: FC<ITableBodyProps> = (props) => {
     onSortDataSource(arr)
   }, [onSortDataSource, dataSource])
 
-  return <tbody className={`${cssBlock}-body`}>
+  return <div role="tbody" className={`${cssBlock}-body`}>
     {
       dataSource.map((rowData, index) => {
         return <TableRow
@@ -33,7 +33,7 @@ const TableBody: FC<ITableBodyProps> = (props) => {
         />
       })
     }
-  </tbody>
+  </div>
 }
 
 export default TableBody
