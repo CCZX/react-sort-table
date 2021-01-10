@@ -106,27 +106,27 @@ const TableBodyRow: FC<ITableBodyRowProps> = (props) => {
   // 拖拽预览
   dragPreview(drop(tableBodyRowRef))
 
-  return drag(<div
-      role="tr"
-      ref={tableBodyRowRef}
-      style={{
-        opacity: isDragging ? '0.7' : '1'
-      }}
-      className={tableBodyRowCls}
-    >
-      {
-        columns.map((column) => {
-          return <TableBodyCell
-            key={column.key}
-            column={column}
-            rowData={rowData}
-            width={columnsWidth[column.key]}
-            rowIndex={rowIndex}
-          />
-        })
-      }
-    </div>
-  )
+  return <div
+    role="tr"
+    ref={tableBodyRowRef}
+    style={{
+      opacity: isDragging ? '0.7' : '1'
+    }}
+    className={tableBodyRowCls}
+  >
+    {
+      columns.map((column) => {
+        return <TableBodyCell
+          key={column.key}
+          column={column}
+          rowData={rowData}
+          width={columnsWidth[column.key]}
+          rowIndex={rowIndex}
+          drag={drag}
+        />
+      })
+    }
+  </div>
 }
 
 export default TableBodyRow

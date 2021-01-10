@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react'
-import { tableCellMinWidth, tableCellMaxWidth } from './const'
+import { tableCellMinWidth } from './const'
 
 interface IAdjustWidthProps {
   width: strOrNum,
@@ -15,7 +15,7 @@ const AdjustWidth: FC<IAdjustWidthProps> = ({ width, onWidthChange }) => {
     const diffX = clientX - startX
     let nextWidth = Number(width) + diffX
     nextWidth = nextWidth < tableCellMinWidth ? tableCellMinWidth : nextWidth
-    nextWidth = nextWidth > tableCellMaxWidth ? tableCellMaxWidth : nextWidth
+    // nextWidth = nextWidth > tableCellMaxWidth ? tableCellMaxWidth : nextWidth
     onWidthChange(nextWidth)
   }, [width, onWidthChange])
 

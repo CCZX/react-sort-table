@@ -2,15 +2,17 @@ import { IColumnsItem } from './interface'
 
 export const cssBlock = "react-drag-sort-table"
 
-export const sortColumnKey = 'SORT_COLUMN_KEY'
+export const dragSortColumnKey = 'SORT_COLUMN_KEY'
+
+export const dragSortCloumnWidth = '50'
 
 export const defaultWidth = '100'
 
 export const sortColumn: IColumnsItem = {
-  key: sortColumnKey,
-  dataKey: sortColumnKey,
-  title: '排序',
-  width: '70',
+  key: dragSortColumnKey,
+  dataKey: dragSortColumnKey,
+  title: '',
+  width: dragSortCloumnWidth,
 }
 
 export const tableCellMinWidth = 70

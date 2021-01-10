@@ -1,44 +1,44 @@
-import React, { FC, useCallback, useLayoutEffect, useRef, useState } from 'react'
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import AdjustWidth from './adjust-width'
-import { isNumber } from './utils'
-import { cssBlock } from './const'
+import { isNumber, debuounce } from './utils'
+import { cssBlock, dragSortColumnKey } from './const'
 import { IColumnsItem } from './interface'
 
 interface ITableHeadProps {
   canAdjustWidth: boolean
   columns: IColumnsItem[]
   columnsWidth: strOrNumObj
-  onColumnsWidthChange: (data: strOrNumObj) => void
+  updateColumnsWidth: (data: {[key: string]: string}) => void
 }
 
-const TableHeadCell: FC<any> = ({ item, width, isLast, canAdjustWidth, onColumnsWidthChange }) => {
+const TableHeadCell: FC<any> = ({ grow, item, width, isLast, canAdjustWidth, onColumnWidthChange }) => {
   const { title, key, required } = item
 
   const cellRef = useRef<HTMLTableHeaderCellElement>(null)
-  const [cellWidth, setCellWidth] = useState<number>(0)
 
-  let parseWidth = 'auto'
-  if (isNumber(width)) {
-    parseWidth = `${width}px`
-  }
-
-  useLayoutEffect(() => {
-    const { width = 0 } = cellRef.current?.getBoundingClientRect() || {}
-    setCellWidth(width)
-  }, [setCellWidth, cellRef.current])
+  const flexProperty = useMemo(() => {
+    const parseWidth = isNumber(width) ? `${width}px` : 'auto'
+    if (isNumber(item.width)) {
+      return `0 0 ${parseWidth}`
+    }
+    // if (parseWidth !== 'auto' && !grow) {
+    if (parseWidth !== 'auto') {
+      return `0 0 ${parseWidth}`
+    }
+    return `1 1 ${parseWidth}`
+  }, [width, key, dragSortColumnKey, grow])
 
   const handleWidthChange = useCallback((width) => {
-    onColumnsWidthChange({[key]: width})
-    setCellWidth(width)
-  }, [onColumnsWidthChange, setCellWidth])
+    onColumnWidthChange({[key]: width})
+  }, [onColumnWidthChange])
 
   return <span
     role="th"
+    data-key={key}
     ref={cellRef}
     className={`${cssBlock}-cell ${cssBlock}-head-cell`}
     style={{
-      width: parseWidth,
-      flexBasis: parseWidth,
+      flex: flexProperty,
     }}
   >
     {
@@ -46,8 +46,8 @@ const TableHeadCell: FC<any> = ({ item, width, isLast, canAdjustWidth, onColumns
     }
     { title }
     {
-      !isLast && canAdjustWidth && <AdjustWidth
-        width={cellWidth}
+      !isLast && canAdjustWidth && key !== dragSortColumnKey && <AdjustWidth
+        width={width}
         onWidthChange={handleWidthChange}
       />
     }
@@ -55,10 +55,43 @@ const TableHeadCell: FC<any> = ({ item, width, isLast, canAdjustWidth, onColumns
 }
 
 const TableHeader: FC<ITableHeadProps> = (props) => {
-  const { canAdjustWidth, columns, columnsWidth, onColumnsWidthChange } = props
+  const { canAdjustWidth, columns, columnsWidth, updateColumnsWidth } = props
+  const headRowRef = useRef<HTMLDivElement>(null)
+  const [grow, setGrow] = useState(false)
+
+  const calcColumnsWidth = useCallback(() => {
+    if (!headRowRef.current) return
+    const childNodes = Array.from(headRowRef.current.children)
+    const widths = childNodes.reduce<{[key: string]: string}>((prev, curr) => {
+      const key = curr.getAttribute('data-key') || ''
+      const width = curr.getBoundingClientRect().width
+      prev[key] = String(width)
+      return prev
+    }, {})
+    updateColumnsWidth(widths)
+  }, [updateColumnsWidth, headRowRef.current])
+
+  useEffect(() => {
+    calcColumnsWidth()
+  }, [])
+
+  useEffect(() => {
+    const handleResize = debuounce(() => {
+      updateColumnsWidth({})
+      calcColumnsWidth()
+    }, 500)
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [updateColumnsWidth, calcColumnsWidth])
+
+  const handleColumnWidthChange = useCallback((width) => {
+    updateColumnsWidth({ ...columnsWidth, ...width })
+  }, [columnsWidth, updateColumnsWidth])
 
   return <div role="thead" className={`${cssBlock}-head`}>
-    <div role="tr" className={`${cssBlock}-row ${cssBlock}-head-row`}>
+    <div role="tr" ref={headRowRef} className={`${cssBlock}-row ${cssBlock}-head-row`}>
       {
         columns.map((item, index) => {
           return <TableHeadCell
@@ -66,8 +99,9 @@ const TableHeader: FC<ITableHeadProps> = (props) => {
             canAdjustWidth={canAdjustWidth}
             isLast={index === columns.length - 1}
             item={item}
-            width={columnsWidth[item.key]}
-            onColumnsWidthChange={onColumnsWidthChange}
+            width={columnsWidth[item.key] || item.width || 'auto'}
+            onColumnWidthChange={handleColumnWidthChange}
+            grow={grow}
           />
         })
       }

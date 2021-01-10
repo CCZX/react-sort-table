@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import { DragSortIcon } from './icons'
 import { isNumber } from './utils'
-import { sortColumnKey, cssBlock } from './const'
+import { dragSortColumnKey, cssBlock } from './const'
 import { IColumnsItem, IDataSourceItem } from './interface'
 
 interface ITableBodyCellProps {
@@ -9,30 +9,47 @@ interface ITableBodyCellProps {
   rowData: IDataSourceItem
   width: strOrNum
   rowIndex: number
+  drag: any
 }
 
-const TableBodyCell: FC<ITableBodyCellProps> = ({ column, rowData, width, rowIndex }) => {
-  const isDragSortColumn = column.key === sortColumnKey
+const TableBodyCell: FC<ITableBodyCellProps> = ({ column, rowData, width, rowIndex, drag }) => {
+  const { key } = column
+  const isDragSortColumn = key === dragSortColumnKey
   const text = rowData[column.dataKey]
-
-  let parseWidth = 'auto'
-  if (isNumber(width)) {
-    parseWidth = `${width}px`
-  }
 
   let cls = `${cssBlock}-cell ${cssBlock}-body-cell`
   if (isDragSortColumn) {
     cls = cls + ' sort-column'
   }
 
+  const flexProperty = useMemo(() => {
+    const parseWidth = isNumber(width) ? `${width}px` : 'auto'
+    return `0 0 ${parseWidth}`
+  }, [width, key, dragSortColumnKey])
+
   const child = typeof column.render === 'function' ? column.render(text, rowData, rowIndex) : text
+
+  if (isDragSortColumn) {
+    return drag(
+      <span
+        role="td"
+        className={cls}
+        style={{
+          flex: flexProperty,
+        }}
+      >
+        {
+          isDragSortColumn ? <DragSortIcon /> : child
+        }
+      </span>
+    )
+  }
 
   return <span
     role="td"
     className={cls}
     style={{
-      width: parseWidth,
-      flexBasis: parseWidth
+      flex: flexProperty,
     }}
   >
     {

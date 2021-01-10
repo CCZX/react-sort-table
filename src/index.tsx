@@ -1,6 +1,7 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import isEqual from 'lodash.isequal'
 import TableBody from './table-body'
 import TableHead from './table-head';
 import { IDataSourceItem, IColumnsItem, alignPosition } from './interface'
@@ -31,7 +32,7 @@ export interface IDragSortTableProps {
 const DragSortTable: FC<IDragSortTableProps> = (props) => {
   const { dataSource, columns, canDragSort = true, canAdjustWidth = true, align = 'center', onSortDataSource } = props
 
-  const [columnsWidth, setColumnsWidth] = useState({})
+  const [columnsWidth, setColumnsWidth] = useState<{[key: string]: string}>({})
 
   // 添加拖拽排序列
   const whithSortColumns = useMemo<IColumnsItem[]>(() => {
@@ -41,26 +42,16 @@ const DragSortTable: FC<IDragSortTableProps> = (props) => {
     return columns
   }, [columns, canDragSort])
 
-  useEffect(() => {
-    const columnsWidth: strOrNumObj = whithSortColumns.reduce((mutl: strOrNumObj, column) => {
-      const key = String(column.key)
-      mutl[key] = column.width || 'auto'
-      return mutl
-    }, {})
-
-    setColumnsWidth(columnsWidth)
-  }, [whithSortColumns])
-
-  const handleColumnsWidthChange = useCallback((data: strOrNumObj) => {
-    setColumnsWidth({
-      ...columnsWidth,
-      ...data
-    })
-  }, [columnsWidth, setColumnsWidth])
-
   const handleSortDataSource = useCallback((data: IDataSourceItem[]) => {
     onSortDataSource(data)
   }, [onSortDataSource])
+
+  const updateColumnsWidth = useCallback((widths) => {
+    console.log(widths, columnsWidth)
+    if (!isEqual(columnsWidth, widths)) {
+      setColumnsWidth(widths)
+    }
+  }, [setColumnsWidth, columnsWidth])
 
   return <DndProvider backend={HTML5Backend}>
     <div
@@ -74,7 +65,7 @@ const DragSortTable: FC<IDragSortTableProps> = (props) => {
         canAdjustWidth={canAdjustWidth}
         columns={whithSortColumns}
         columnsWidth={columnsWidth}
-        onColumnsWidthChange={handleColumnsWidthChange}
+        updateColumnsWidth={updateColumnsWidth}
       />
       <TableBody
         dataSource={dataSource}

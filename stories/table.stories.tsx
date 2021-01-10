@@ -35,14 +35,13 @@ const Template: Story<IDragSortTableProps> = args => {
       title: 'Name',
       dataKey: 'name',
       key: 'name',
-      width: '80',
+      width: '200',
       render(name, row, index) {
-        console.log(index)
         return <input value={name} onChange={(e) => handleNameChange(e, index)} />
       }
     },
     {
-      title: 'Age',
+      title: 'AgeAgeAgeAgeAge',
       dataKey: 'age',
       key: 'age',
       required: true
@@ -58,7 +57,9 @@ const Template: Story<IDragSortTableProps> = args => {
     setDataSource(data)
   }, [])
 
-  return <div style={{width: '500px'}}>
+  return <div 
+    // style={{width: '500px'}}
+  >
     <Table {...args}
       dataSource={dataSource}
       onSortDataSource={handleSort}

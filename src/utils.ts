@@ -18,3 +18,13 @@ export const arrayMove = (array: any[], from: number, to: number) => {
 	arrayMoveMutate(array, from, to);
 	return array;
 };
+
+export function debuounce(fn: noop, delay: number) {
+	let timer: any = null
+	return function (...args: any[]) {
+		if (timer) clearTimeout(timer)
+		timer = setTimeout(() => {
+			fn.apply(null, args)
+		}, delay);
+	}
+}
