@@ -30,7 +30,7 @@ export interface IDragSortTableProps {
 }
 
 const DragSortTable: FC<IDragSortTableProps> = (props) => {
-  const { dataSource, columns, canDragSort = true, canAdjustWidth = true, align = 'center', onSortDataSource } = props
+  const { dataSource, columns, canDragSort = true, canAdjustWidth = true, onSortDataSource } = props
 
   const [columnsWidth, setColumnsWidth] = useState<{[key: string]: string}>({})
 
@@ -56,9 +56,6 @@ const DragSortTable: FC<IDragSortTableProps> = (props) => {
     <div
       role="table"
       className={cssBlock}
-      style={{
-        textAlign: align
-      }}
     >
       <TableHead
         canAdjustWidth={canAdjustWidth}
