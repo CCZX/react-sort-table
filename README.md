@@ -9,7 +9,12 @@ npm install react-drag-sort-table
 // yarn
 yarn add react-drag-sort-table
 ```
+## use
 
+```js
+import DragSortTable from 'react-drag-sort-table'
+import 'react-drag-sort-table/dist/dist.min.css'
+```
 ## API
 
 ### Table
