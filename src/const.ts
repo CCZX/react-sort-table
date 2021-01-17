@@ -15,6 +15,6 @@ export const sortColumn: IColumnsItem = {
   width: dragSortCloumnWidth,
 }
 
-export const tableCellMinWidth = 56
+export const tableCellMinWidth = 60
 
 export const tableCellMaxWidth = 200

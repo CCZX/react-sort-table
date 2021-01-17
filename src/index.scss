@@ -1,5 +1,5 @@
 $cssBlock: 'react-drag-sort-table';
-$tableCellMinWidth: 100px;
+$tableCellMinWidth: 60px;
 
 .#{$cssBlock} {
   width: 100%;
@@ -10,6 +10,7 @@ $tableCellMinWidth: 100px;
   &-row {
     display: flex;
     display: inline-flex;
+    width: 100%;
     transition: all .2s ease-in-out;
     &:hover {
       background-color: rgba(120, 186, 252, 0.1);
@@ -21,9 +22,7 @@ $tableCellMinWidth: 100px;
       display: inline-block;
       box-sizing: border-box;
       min-width: $tableCellMinWidth;
-      margin-left: 10px;
-      padding: 10px 0;
-      // border-bottom: 1px solid #f0f0f0;
+      padding: 10px;
       text-align: left;
       &.sort-column {
         cursor: move;
@@ -36,7 +35,7 @@ $tableCellMinWidth: 100px;
   }
 
   &-head {
-    display: inline-block;
+    width: 100%;
     &-row {
       background: rgba(120, 186, 252, 0.1);
       .#{$cssBlock}-cell {
@@ -55,9 +54,9 @@ $tableCellMinWidth: 100px;
   }
 
   &-body {
-    display: inline-block;
+    width: 100%;
     &-row {
-      margin-top: 1px;
+      // margin-top: 1px;
       &.drop-it-bottom {
         .#{$cssBlock}-cell {
           border-bottom: 1px solid #59c7f9;
